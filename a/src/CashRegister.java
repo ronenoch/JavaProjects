@@ -41,8 +41,8 @@ class LineItem {
 }
 
 public class CashRegister {
-    private double cashInRegister;
     private ArrayList<LineItem> receiptItems;
+    private double cashInRegister;
 
     public CashRegister() {
         this.cashInRegister = 0;
