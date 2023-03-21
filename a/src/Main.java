@@ -6,10 +6,6 @@ public class Main {
         CashRegister cashRegister = new CashRegister(1000.0);
         Scanner sc= new Scanner(System.in);
 
-        /*Item item1 = new Item("Shampoo", 10.0);
-        Item item2 = new Item("Toothbrush", 2.0);
-        Item item3 = new Item("Soap", 5.0);*/
-
         boolean exit = false;
         while (!exit) {
             System.out.println("Enter 1 to add an item to the current purchase");

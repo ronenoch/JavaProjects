@@ -27,7 +27,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("MMN 11 Q 2 - Draw");
+        stage.setTitle("MAMAN 11 Q 2 - Graph");
         stage.setScene(scene);
         stage.show();
     }

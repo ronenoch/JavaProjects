@@ -25,11 +25,11 @@
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.maman11_b.DrawController">
 <ToolBar prefHeight="40.0" prefWidth="200.0">
-    <Button mnemonicParsing="false" onAction="#onDrawButtonClick" text="Generate Shapes"/>
+    <Button mnemonicParsing="false" onAction="#onDrawButtonClick" text="Next"/>
 </ToolBar>
 <BorderPane>
     <center>
-        <Canvas fx:id="canvas" height="500.0" width="500.0" BorderPane.alignment="CENTER"/>
+        <Canvas fx:id="canvas" height="500.0" width="800.0" BorderPane.alignment="CENTER"/>
     </center>
 </BorderPane>
 </VBox>
