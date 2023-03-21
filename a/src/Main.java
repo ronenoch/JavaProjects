@@ -3,15 +3,16 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
-        CashRegister cashRegister = new CashRegister(1000.0);
-        Scanner sc= new Scanner(System.in);
+        CashRegister cashRegister = new CashRegister(300.0);
+        Scanner sc = new Scanner(System.in);
 
         boolean exit = false;
         while (!exit) {
+            System.out.println("The Usage menu is:");
             System.out.println("Enter 1 to add an item to the current purchase");
-            System.out.println("Enter 2 to receive payment from the customer");
-            System.out.println("Enter 3 to get the current purchase details");
-            System.out.println("Enter 4 to get the total amount of all purchases");
+            System.out.println("Enter 2 to receive cash from the customer");
+            System.out.println("Enter 3 to get the current purchase details (receipt)");
+            System.out.println("Enter 4 to get the total amount of cash in the cash register");
             System.out.println("Enter 5 to exit");
 
             int choice = sc.nextInt();
@@ -20,13 +21,12 @@ public class Main {
             switch (choice) {
                 case 1:
                     System.out.print("Please enter the item's name: ");
-                    String itemName = sc.nextLine();
+                    String name = sc.nextLine();
                     System.out.print("Please enter the item's price: ");
-                    double itemPrice = sc.nextDouble();
+                    double price = sc.nextDouble();
                     System.out.print("Please enter the item's quantity: ");
-                    int itemQuantity = sc.nextInt();
-                    Item item = new Item(itemName, itemPrice);
-                    cashRegister.addItem(item, itemQuantity);
+                    int quantity = sc.nextInt();
+                    cashRegister.addNewItem(new Item(name, price), quantity);
                     break;
 
                 case 2:
@@ -46,7 +46,7 @@ public class Main {
                     break;
 
                 case 4:
-                    System.out.println("The total amount of money is: " + cashRegister.getTotalCash());
+                    System.out.println("The total amount of money in the register is: " + cashRegister.getTotalCash());
                     break;
 
                 case 5:

@@ -18,11 +18,11 @@ class Item {
     }
 }
 
-class LineItem {
+class ItemEntry {
     private Item item;
     private int quantity;
 
-    public LineItem(Item item, int quantity) {
+    public ItemEntry(Item item, int quantity) {
         this.item = item;
         this.quantity = quantity;
     }
@@ -35,14 +35,14 @@ class LineItem {
         return quantity;
     }
 
-    public double getTotalPrice() {
-        return item.getPrice() * quantity;
+    public double getItemTotalPrice() {
+        return quantity * item.getPrice();
     }
 }
 
 public class CashRegister {
-    private ArrayList<LineItem> receiptItems;
     private double cashInRegister;
+    private ArrayList<ItemEntry> receiptItems;
 
     public CashRegister() {
         this.cashInRegister = 0;
@@ -54,28 +54,28 @@ public class CashRegister {
         this.receiptItems = new ArrayList<>();
     }
 
-    public void addItem(Item item, int quantity) {
-        LineItem lineItem = new LineItem(item, quantity);
-        this.receiptItems.add(lineItem);
+    public void addNewItem(Item item, int quantity) {
+        if (quantity >= 0) {
+            this.receiptItems.add(new ItemEntry(item, quantity));
+        }
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Item\tQuantity\tPrice\n");
-        for (LineItem lineItem : this.receiptItems) {
-            sb.append(lineItem.getItem().getName()).append("\t")
-                    .append(lineItem.getQuantity()).append("\t\t")
-                    .append(lineItem.getTotalPrice()).append("\n");
+        StringBuilder builder = new StringBuilder("Item's Name\tQuantity\tPrice\n");
+        for (ItemEntry itemEntry : this.receiptItems) {
+            builder.append(itemEntry.getItem().getName()).append("\t\t");
+            builder.append(itemEntry.getQuantity()).append("\t\t");
+            builder.append(itemEntry.getItemTotalPrice()).append("\n");
         }
-        sb.append("\nTotal: ").append(getCurrentPurchaseAmount());
-        return sb.toString();
+        builder.append("\nTotal Amount: " + String.valueOf(getCurrentPurchaseAmount()));
+        return builder.toString();
     }
 
     public double getCurrentPurchaseAmount() {
         double totalPurchase = 0;
-        for (LineItem lineItem : receiptItems) {
-            totalPurchase += lineItem.getTotalPrice();
+        for (ItemEntry itemEntry : receiptItems) {
+            totalPurchase += itemEntry.getItemTotalPrice();
         }
         return totalPurchase;
     }
