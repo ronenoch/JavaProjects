@@ -1,4 +1,4 @@
-package com.example.maman11_b;
+package com.temperature.maman11_b;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

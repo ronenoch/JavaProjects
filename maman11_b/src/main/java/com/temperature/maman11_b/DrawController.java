@@ -1,7 +1,7 @@
-package com.example.maman11_b;
+package com.temperature.maman11_b;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+//import javafx.scene.control.Label;
 //
 //package com.avivn.mmn11.q2;
 
@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.util.Random;
 
@@ -66,11 +67,20 @@ public class DrawController {
         graphics.strokeLine(start_x, start_y, weidth, start_y);
         graphics.strokeLine(start_x, start_y, start_x, start_x);
 
+        Font header_font = new Font(20);
+        Font last_font = graphics.getFont();
+
+        Font coordinate_font = new Font(16);
+        graphics.setFont(coordinate_font);
+
         graphics.rotate(-90.0);
         graphics.strokeText("Temperature", -(start_y + start_x) / 2, 20);
         graphics.rotate(90.0);
         graphics.strokeText("months", (weidth + start_x) / 2, start_y + 35);
+
+        graphics.setFont(header_font);
         graphics.strokeText("average temperature in " + String.valueOf(2017 + year), (weidth + start_x) / 2, 20);
+        graphics.setFont(last_font);
 
         for (int i = 0; i < 20; i++)
         {
