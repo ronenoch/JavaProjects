@@ -39,10 +39,10 @@ public class DrawController {
     protected void onDrawButtonClick() {
         int start_x = 40;
         int start_y = (int)canvas.getHeight() - 40;
-        int weidth = (int)canvas.getWidth() - 40;
+        int width = (int)canvas.getWidth() - 40;
 
         int single_value_height = (start_y - start_x) / 15;
-        int current_start_draw_pos = (weidth + start_x) / 12;
+        int current_start_draw_pos = (width + start_x) / 12;
         int current_temperature;
         int min = 100000;
         int max = 0;
@@ -51,7 +51,7 @@ public class DrawController {
                 .clearRect(0,0,canvas.getWidth(), canvas.getHeight());
 
         GraphicsContext graphics = canvas.getGraphicsContext2D();
-        graphics.strokeLine(start_x, start_y, weidth, start_y);
+        graphics.strokeLine(start_x, start_y, width, start_y);
         graphics.strokeLine(start_x, start_y, start_x, start_x);
 
         Font header_font = new Font(20);
@@ -63,12 +63,12 @@ public class DrawController {
         graphics.rotate(-90.0);
         graphics.strokeText("Temperature", -(start_y + start_x) / 2, 20);
         graphics.rotate(90.0);
-        graphics.strokeText("months", (weidth + start_x) / 2, start_y + 35);
+        graphics.strokeText("months", (width + start_x) / 2, start_y + 35);
 
         graphics.setFont(header_font);
         graphics.strokeText(
                 "average temperature in " + String.valueOf(2017 + year),
-                (weidth + start_x) / 2,
+                (width + start_x) / 2,
                 20);
         graphics.setFont(last_font);
 
@@ -108,7 +108,7 @@ public class DrawController {
 
 //            graphics.strokeText(months[i], current_start_draw_pos, start_y + 20);
             graphics.strokeText(String.valueOf(i), current_start_draw_pos + 5, start_y + 20);
-            current_start_draw_pos += (weidth - start_x) / 12;
+            current_start_draw_pos += (width - start_x) / 12;
         }
 
         year = (year + 1) % 5;

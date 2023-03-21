@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,22 +9,22 @@ public class Main {
         boolean exit = false;
         while (!exit) {
             System.out.println("The Usage menu is:");
-            System.out.println("Enter 1 to add an item to the current purchase");
+            System.out.println("Enter 1 to add a new item to the current purchase");
             System.out.println("Enter 2 to receive cash from the customer");
-            System.out.println("Enter 3 to get the current purchase details (receipt)");
+            System.out.println("Enter 3 to get the current receipt details");
             System.out.println("Enter 4 to get the total amount of cash in the cash register");
-            System.out.println("Enter 5 to exit");
+            System.out.println("Enter 5 to quit");
 
             int choice = sc.nextInt();
             sc.nextLine();
 
             switch (choice) {
                 case 1:
-                    System.out.print("Please enter the item's name: ");
+                    System.out.print("What is the item's name? ");
                     String name = sc.nextLine();
-                    System.out.print("Please enter the item's price: ");
+                    System.out.print("What is the item's price? ");
                     double price = sc.nextDouble();
-                    System.out.print("Please enter the item's quantity: ");
+                    System.out.print("What is the item's quantity? ");
                     int quantity = sc.nextInt();
                     cashDesk.addNewItem(new Item(name, price), quantity);
                     break;

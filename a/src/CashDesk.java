@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 class Item {
-    private String name;
-    private double price;
+    private final String name;
+    private final double price;
 
     public Item(String name, double price) {
         this.name = name;
@@ -19,8 +19,8 @@ class Item {
 }
 
 class ItemEntry {
-    private Item item;
-    private int quantity;
+    private final Item item;
+    private final int quantity;
 
     public ItemEntry(Item item, int quantity) {
         this.item = item;
@@ -42,7 +42,7 @@ class ItemEntry {
 
 public class CashDesk {
     private double cashInRegister;
-    private ArrayList<ItemEntry> receiptItems;
+    private final ArrayList<ItemEntry> receiptItems;
 
     public CashDesk() {
         this.cashInRegister = 0;
@@ -68,7 +68,7 @@ public class CashDesk {
             builder.append(itemEntry.getQuantity()).append("\t\t");
             builder.append(itemEntry.getItemTotalPrice()).append("\n");
         }
-        builder.append("\nTotal Amount: " + String.valueOf(getCurrentPurchaseAmount()));
+        builder.append("\nTotal Amount: " + getCurrentPurchaseAmount());
         return builder.toString();
     }
 
