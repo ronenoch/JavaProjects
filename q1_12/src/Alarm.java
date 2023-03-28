@@ -9,11 +9,4 @@ public abstract class Alarm {
     }
 
     public abstract void action();
-
-//    public String getAddress() {
-//        return address;
-//    }
-//    public Date getStartTime() {
-//        return startTime;
-//    }
 }
