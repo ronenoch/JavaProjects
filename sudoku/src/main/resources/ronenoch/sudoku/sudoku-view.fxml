@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ronenoch.sudoku.SudokuController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+<!--    <Label fx:id="welcomeText"/>-->
+<!--    <Button text="Hello!" onAction="#onHelloButtonClick"/>-->
+    <GridPane fx:id="grid" alignment="CENTER" focusTraversable="true" maxWidth="-Infinity" minWidth="-Infinity"
+              prefWidth="400.0">
+        <rowConstraints>
+            <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+    </GridPane>
+    <HBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml">
+
+        <Button text="clear" onAction="#clear_board">
+<!--                <HBox.margin>-->
+<!--                    <Insets top="70.0" left="10"/>-->
+<!--                </HBox.margin>-->
+        </Button>
+        <Button text="set" onAction="#set_board">
+<!--                <HBox.margin>-->
+<!--                    <Insets left="100"/>-->
+<!--                </HBox.margin>-->
+        </Button>
+    </HBox>
+<!--    <TextField fx:id="textF" maxWidth="300.0" onKeyPressed="#keyPressed">-->
+<!--        <VBox.margin>-->
+<!--            <Insets top="70.0"/>-->
+<!--        </VBox.margin>-->
+<!--    </TextField>-->
+</VBox>
