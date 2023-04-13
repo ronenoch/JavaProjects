@@ -11,7 +11,7 @@ public class SudokuApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SudokuApplication.class.getResource("sudoku-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 450, 450);
+        Scene scene = new Scene(fxmlLoader.load(), 350 , 350);
         stage.setTitle("Sudoku");
         stage.setScene(scene);
         stage.show();
