@@ -1,0 +1,36 @@
+cola
+drink
+3
+sprite
+drink
+3
+beer
+drink
+5
+wine
+drink
+6
+salad
+appetizer
+4
+bread
+appetizer
+2
+tartar
+appetizer
+8
+steak
+main course
+20
+burger
+main course
+10
+chicken
+main course
+9
+ice cream
+dessert
+3
+waffle
+dessert
+4

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+
+<ScrollPane
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="ronenoch.maman13.restaurantmenu.MenuController">
+    <content>
+
+        <VBox alignment="CENTER" spacing="20.0"
+              fx:id="v_box">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+
+            <Button text="place order" onAction="#onPLaceOrderButtonClick"/>
+        </VBox>
+    </content>
+</ScrollPane>
