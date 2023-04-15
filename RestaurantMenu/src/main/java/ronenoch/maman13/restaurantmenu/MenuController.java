@@ -126,6 +126,7 @@ public class MenuController {
 //                sb.append("Name     amount  total price\n");
                 sb.append("Name\t\tamount\ttotal price\n");
                 /* TODO check null ? PROBABLY NOT */
+                /* TODO Should I make a toString in Order?*/
                 for (Map.Entry<Item, Integer> entry : this.order.getOrderData().entrySet()) {
                     sb.append(entry.getKey().getDescription());
 //                            .append(entry.getKey().getPrice());
