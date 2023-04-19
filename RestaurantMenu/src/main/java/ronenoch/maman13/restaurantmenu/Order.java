@@ -52,6 +52,24 @@ public class Order {
         return total_price;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Your Order\n");
+//        sb.append("Name     amount  total price\n");
+        sb.append("Name\t\tamount\ttotal price\n");
+        /* TODO check null ? PROBABLY NOT */
+        for (Map.Entry<Item, Integer> entry : this.getOrderData().entrySet()) {
+            sb.append(entry.getKey().getDescription());
+//                    .append(entry.getKey().getPrice());
+//            sb.append("           ").append(entry.getValue()).append("             ").append(entry.getValue() * entry.getKey().getPrice());
+            sb.append("\t\t").append(entry.getValue()).append("\t\t").append(entry.getValue() * entry.getKey().getPrice());
+            sb.append("\n");
+        }
+        sb.append("total price: ").append(this.getTotalPrice());
+        return sb.toString();
+    }
+
     public Menu getMenu() {
         return menu;
     }

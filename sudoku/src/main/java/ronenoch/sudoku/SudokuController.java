@@ -38,9 +38,6 @@ public class SudokuController {
         } else {
             current_square.setStyle("");
         }
-
-//        current_square.setStyle(current_square.getStyle() + "-fx-shape: 'M0,0 H" + String.valueOf((int)current_square.getPrefWidth()) + " V" + String.valueOf((int)current_square.getPrefWidth()) +  " H0 Z';");
-
     }
 
     public void initialize() {
@@ -76,8 +73,20 @@ public class SudokuController {
                     @Override
                     public void changed(ObservableValue<? extends String> observable, String oldValue,
                                         String newValue) {
-                        if (!newValue.matches("\\d*")) {
-                            current_square.setText(newValue.replaceAll("[^\\d]", ""));
+                        /* for some reason, we are not allowed to use simple regex so I must re-implement regex on my own. */
+
+//                        if (!newValue.matches("\\d*")) {
+//                            current_square.setText(newValue.replaceAll("[^\\d]", ""));
+//                        }
+
+                        try {
+                            if (newValue.isEmpty())
+                            {
+                                return;
+                            }
+                            int tester = Integer.valueOf(newValue);
+                        } catch (NumberFormatException e) {
+                            current_square.setText(oldValue);
                         }
                     }
                 });
@@ -184,6 +193,7 @@ public class SudokuController {
             j = id % SIZE;
             numeric_input_value = Integer.valueOf(input_text);
 
+            /* input validation */
             if (numeric_input_value > SIZE ||
                     0 >= numeric_input_value ||
                     !is_insertion_legal(i, j, numeric_input_value)) {

@@ -114,7 +114,6 @@ public class MenuController {
     protected void onPLaceOrderButtonClick() {
         String[] options = {"Confirm", "Edit", "Cancel"};
         String userNameAndID;
-        StringBuilder sb = new StringBuilder();
 
         /* default action is edit. */
         int choice = JOptionPane.showOptionDialog(null, "Is the order OK?", "Order confirmation",
@@ -122,22 +121,8 @@ public class MenuController {
 
         switch (choice) {
             case 0:
-                sb.append("Your Order\n");
-//                sb.append("Name     amount  total price\n");
-                sb.append("Name\t\tamount\ttotal price\n");
-                /* TODO check null ? PROBABLY NOT */
-                /* TODO Should I make a toString in Order?*/
-                for (Map.Entry<Item, Integer> entry : this.order.getOrderData().entrySet()) {
-                    sb.append(entry.getKey().getDescription());
-//                            .append(entry.getKey().getPrice());
-//                    sb.append("           ").append(entry.getValue()).append("             ").append(entry.getValue() * entry.getKey().getPrice());
-                    sb.append("\t\t").append(entry.getValue()).append("\t\t").append(entry.getValue() * entry.getKey().getPrice());
-                    sb.append("\n");
-                }
-                sb.append("total price: ").append(order.getTotalPrice());
-
                 userNameAndID = JOptionPane.showInputDialog("Enter your name + id Please.");
-                writeDataToFile(userNameAndID + ".txt", sb.toString());
+                writeDataToFile(userNameAndID + ".txt", this.order.toString());
                 clearOrder();
                 break;
             case 1:
