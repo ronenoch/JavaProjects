@@ -1,5 +1,3 @@
-package ronenoch.maman13.restaurantmenu;
-
 public class Item {
     private String description;
     private String type;

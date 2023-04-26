@@ -1,5 +1,3 @@
-package ronenoch.maman13.restaurantmenu;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

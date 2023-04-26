@@ -1,4 +1,4 @@
-package ronenoch.maman13.restaurantmenu;
+//package ronenoch.sudoku;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MenuApplication extends Application {
+public class SudokuApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MenuApplication.class.getResource("menu-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 500);
-        stage.setTitle("Menu");
+        FXMLLoader fxmlLoader = new FXMLLoader(SudokuApplication.class.getResource("sudoku-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 350 , 350);
+        stage.setTitle("Sudoku");
         stage.setScene(scene);
         stage.show();
     }

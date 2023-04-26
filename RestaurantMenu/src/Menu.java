@@ -1,5 +1,3 @@
-package ronenoch.maman13.restaurantmenu;
-
 import javax.swing.JOptionPane;
 import java.io.File;
 import java.io.IOException;

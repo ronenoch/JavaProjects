@@ -8,7 +8,7 @@
 
 <ScrollPane
     xmlns:fx="http://javafx.com/fxml"
-    fx:controller="ronenoch.maman13.restaurantmenu.MenuController">
+    fx:controller="MenuController">
     <content>
 
         <VBox alignment="CENTER" spacing="20.0"
