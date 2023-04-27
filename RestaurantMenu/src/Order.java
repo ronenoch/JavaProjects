@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,7 +26,7 @@ public class Order {
         return this.orderData;
     }
 
-    public void add_item(Item item, int amount) {
+    public void addItem(Item item, int amount) {
         Item key_item = getItemByName(item.getDescription());
 
         if (null == key_item) {
@@ -54,13 +53,9 @@ public class Order {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Your Order\n");
-//        sb.append("Name     amount  total price\n");
         sb.append("Name\t\tamount\ttotal price\n");
-        /* TODO check null ? PROBABLY NOT */
         for (Map.Entry<Item, Integer> entry : this.getOrderData().entrySet()) {
             sb.append(entry.getKey().getDescription());
-//                    .append(entry.getKey().getPrice());
-//            sb.append("           ").append(entry.getValue()).append("             ").append(entry.getValue() * entry.getKey().getPrice());
             sb.append("\t\t").append(entry.getValue()).append("\t\t").append(entry.getValue() * entry.getKey().getPrice());
             sb.append("\n");
         }

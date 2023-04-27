@@ -60,7 +60,7 @@ public class MenuController {
         ComboBox comboBox = (ComboBox) event.getSource();
         int selectedOption = (int) comboBox.getSelectionModel().getSelectedItem();
 
-        this.order.add_item(item, selectedOption);
+        this.order.addItem(item, selectedOption);
     }
 
     private void InitializeOrder() {

@@ -7,9 +7,9 @@ public class Menu {
     private Map<String, ArrayList<Item>> items;
 
     public Menu() {
-        String item_name;
-        String item_type;
-        int item_price;
+        String itemName;
+        String itemType;
+        int itemPrice;
 
         this.items = new HashMap<String, ArrayList<Item>>() {};
         this.items.put("appetizer", new ArrayList<Item>());
@@ -22,15 +22,15 @@ public class Menu {
             Scanner input = new Scanner(new File("menu.txt"));
 
             while (input.hasNextLine()){
-                item_name = input.nextLine();
-                item_type = input.nextLine();
-                item_price = Integer.valueOf(input.nextLine());
+                itemName = input.nextLine();
+                itemType = input.nextLine();
+                itemPrice = Integer.valueOf(input.nextLine());
 
                 /* Validating the item's type */
-                if (null == this.items.get(item_type)) {
-                    JOptionPane.showMessageDialog(null, item_type + " is not a valid type", "Error", JOptionPane.ERROR_MESSAGE);
+                if (null == this.items.get(itemType)) {
+                    JOptionPane.showMessageDialog(null, itemType + " is not a valid type", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    this.items.get(item_type).add(new Item(item_name, item_type, item_price));
+                    this.items.get(itemType).add(new Item(itemName, itemType, itemPrice));
                 }
             }
 
