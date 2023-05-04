@@ -1,0 +1,26 @@
+import java.util.ArrayList;
+
+public class MyTimer extends Thread{
+
+    private ArrayList<TrafficLight> trafficLights;
+
+    public MyTimer(ArrayList<TrafficLight> trafficLights) {
+        this.trafficLights = trafficLights;
+    }
+
+    @Override
+    public void run() {
+        super.run();
+        while (true)
+        {
+            for (int i = 0; i < this.trafficLights.size(); i++) {
+                this.trafficLights.get(i).switchState();
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}
