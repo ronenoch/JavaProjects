@@ -17,7 +17,7 @@ public class MyTimer extends Thread{
                 this.trafficLights.get(i).switchState();
             }
             try {
-                Thread.sleep(500);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

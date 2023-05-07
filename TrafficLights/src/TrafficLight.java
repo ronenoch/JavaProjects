@@ -1,6 +1,11 @@
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import jdk.nashorn.internal.codegen.CompilerConstants;
+
+import java.util.concurrent.Callable;
+
+import static javafx.application.Platform.runLater;
 
 public class TrafficLight {
     /* I want it to be like a struct */
@@ -8,6 +13,7 @@ public class TrafficLight {
     private Circle greenCircle;
     private Rectangle redRectangle;
     private Rectangle greenRectangle;
+    private BlinkTimer blinkTimer;
 
     public TrafficLight(int x, int y) {
         int radius = 20;
@@ -22,6 +28,18 @@ public class TrafficLight {
         greenRectangle.setStroke(Color.BLACK);
         greenCircle.setStroke(Color.BLACK);
         redCircle.setStroke(Color.BLACK);
+
+        this.blinkTimer = new BlinkTimer(this);
+        this.blinkTimer.start();
+    }
+
+    public void blink() {
+        if (Color.WHITE == this.greenRectangle.getFill()) {
+            this.greenRectangle.setFill(Color.GREEN);
+        } else {
+
+            this.greenRectangle.setFill(Color.WHITE);
+        }
     }
 
     public void vehicleGoGreen() {
@@ -29,6 +47,7 @@ public class TrafficLight {
         this.greenCircle.setFill(Color.GREEN);
         this.redRectangle.setFill(Color.RED);
         this.greenRectangle.setFill(Color.WHITE);
+        this.blinkTimer.suspend();
     }
 
     public void vehicleGoRed() {
@@ -36,6 +55,10 @@ public class TrafficLight {
         this.redCircle.setFill(Color.RED);
         this.greenRectangle.setFill(Color.GREEN);
         this.redRectangle.setFill(Color.WHITE);
+//        if (!this.blinkTimer.isAlive()) {
+//            this.blinkTimer.resume();
+//        }
+        this.blinkTimer.resume();
     }
 
     public void switchState() {
@@ -43,6 +66,7 @@ public class TrafficLight {
             this.vehicleGoGreen();
         } else {
             this.vehicleGoRed();
+//            runLater(() -> blink());
         }
     }
 
@@ -61,4 +85,6 @@ public class TrafficLight {
     public Rectangle getGreenRectangle() {
         return greenRectangle;
     }
+
+
 }

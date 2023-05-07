@@ -1,22 +1,23 @@
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-//import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import javax.swing.*;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Timer;
+
+import javafx.application.Application.Parameters;
+//import javafx.application.Application.Parameters.getParameters;
+
+import static javafx.application.Application.Parameters.*;
+
+//import static com.sun.javafx.application.ParametersImpl.getParameters;
 
 public class MenuController {
 
@@ -32,6 +33,16 @@ public class MenuController {
 //        this.checkBoxes = new ArrayList<CheckBox>();
 //        Circle circle1 = new Circle(50, 50, 40, Color.BLUE);
 //        Circle circle2 = new Circle(50, 110, 20, Color.RED);
+
+//        Parameters parameters = Parameters.getParameters().getRaw();
+//        if (parameters.getRaw().size() > 0) {
+//            System.out.println("The following arguments were passed:");
+//            for (String arg : parameters.getRaw()) {
+//                System.out.println(arg);
+//            }
+//        } else {
+//            System.out.println("No arguments were passed.");
+//        }
 
         TrafficLight a1 = new TrafficLight((int)(150), 40);
 
