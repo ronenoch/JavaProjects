@@ -1,7 +1,6 @@
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import jdk.nashorn.internal.codegen.CompilerConstants;
 
 import java.util.concurrent.Callable;
 
@@ -19,50 +18,59 @@ public class TrafficLight {
         int radius = 20;
 
         redCircle = new Circle(x, y, radius, Color.RED);
-        greenCircle = new Circle(x, y + radius * 2, radius, Color.WHITE);
+        greenCircle = new Circle(x, y + radius * 2, radius, Color.TRANSPARENT);
         redRectangle = new Rectangle(x - radius / 2, y + radius * 3, radius, radius);
         greenRectangle = new Rectangle(x - radius / 2, y + radius * 3 + radius, radius, radius);
         redRectangle.setFill(Color.RED);
-        greenRectangle.setFill(Color.WHITE);
+        greenRectangle.setFill(Color.TRANSPARENT);
         redRectangle.setStroke(Color.BLACK);
         greenRectangle.setStroke(Color.BLACK);
         greenCircle.setStroke(Color.BLACK);
         redCircle.setStroke(Color.BLACK);
 
         this.blinkTimer = new BlinkTimer(this);
-        this.blinkTimer.start();
+//        this.blinkTimer.start();
     }
 
     public void blink() {
-        if (Color.WHITE == this.greenRectangle.getFill()) {
+        if (Color.TRANSPARENT == this.greenRectangle.getFill()) {
             this.greenRectangle.setFill(Color.GREEN);
         } else {
 
-            this.greenRectangle.setFill(Color.WHITE);
+            this.greenRectangle.setFill(Color.TRANSPARENT);
         }
     }
 
     public void vehicleGoGreen() {
-        this.redCircle.setFill(Color.WHITE);
+        if (this.blinkTimer.isAlive()) {
+
+            this.blinkTimer.cancel();
+            try {
+                this.blinkTimer.join(20);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        this.redCircle.setFill(Color.TRANSPARENT);
         this.greenCircle.setFill(Color.GREEN);
         this.redRectangle.setFill(Color.RED);
-        this.greenRectangle.setFill(Color.WHITE);
-        this.blinkTimer.suspend();
+        this.greenRectangle.setFill(Color.TRANSPARENT);
     }
 
     public void vehicleGoRed() {
-        this.greenCircle.setFill(Color.WHITE);
+        this.greenCircle.setFill(Color.TRANSPARENT);
         this.redCircle.setFill(Color.RED);
         this.greenRectangle.setFill(Color.GREEN);
-        this.redRectangle.setFill(Color.WHITE);
-//        if (!this.blinkTimer.isAlive()) {
-//            this.blinkTimer.resume();
-//        }
-        this.blinkTimer.resume();
+        this.redRectangle.setFill(Color.TRANSPARENT);
+        if (!this.blinkTimer.isAlive()) {
+            this.blinkTimer = new BlinkTimer(this);
+            this.blinkTimer.start();
+        }
+//        this.blinkTimer.start();
     }
 
     public void switchState() {
-        if (Color.WHITE == this.greenCircle.getFill()) {
+        if (Color.TRANSPARENT == this.greenCircle.getFill()) {
             this.vehicleGoGreen();
         } else {
             this.vehicleGoRed();

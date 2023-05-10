@@ -5,10 +5,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MenuApplication extends Application {
+public class TrafficApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MenuApplication.class.getResource("menu-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(TrafficApplication.class.getResource("traffic-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 400, 600);
 //        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Menu");

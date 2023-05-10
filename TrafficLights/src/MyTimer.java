@@ -13,13 +13,13 @@ public class MyTimer extends Thread{
         super.run();
         while (true)
         {
-            for (int i = 0; i < this.trafficLights.size(); i++) {
-                this.trafficLights.get(i).switchState();
-            }
             try {
                 Thread.sleep(1500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
+            }
+            for (int i = 0; i < this.trafficLights.size(); i++) {
+                this.trafficLights.get(i).switchState();
             }
         }
     }

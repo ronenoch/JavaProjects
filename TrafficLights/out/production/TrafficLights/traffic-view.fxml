@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 
 <?import javafx.scene.canvas.Canvas?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="MenuController" fx:id="pane">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="TrafficController" fx:id="pane">
 <!--    <center>-->
 <!--        <Canvas fx:id="canvas" height="500.0" width="650.0" BorderPane.alignment="CENTER"/>-->
 <!--    </center>-->
