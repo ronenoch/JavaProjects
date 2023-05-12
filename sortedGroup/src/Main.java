@@ -54,11 +54,5 @@ public class Main {
             System.out.println(i);
         }
 
-
-//        for (Integer it : group1.iterator() ) {
-////            int i = it.next();
-////            System.out.println(i);
-//            System.out.println(it);
-//        }
     }
 }

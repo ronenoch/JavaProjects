@@ -37,11 +37,6 @@ public class RemindersController {
         loadDataFromFile(remindersFileName);
 
         dayBox.setPromptText("day");
-        /*dayBox.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                dayBoxPressed(e);
-            }
-        });*/
 
         /* adding options for the day choice. */
         for (int i = 1; i < 32; i++) {
@@ -49,11 +44,6 @@ public class RemindersController {
         }
 
         monthBox.setPromptText("month");
-        /* monthBox.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                monthBoxPressed(e);
-            }
-        }); */
 
         /* adding options for the month choice. */
         for (int i = 1; i < 13; i++) {
@@ -61,12 +51,6 @@ public class RemindersController {
         }
 
         yearBox.setPromptText("year");
-        /*yearBox.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                *//* Giving the item to the handler to make it be able to update the order *//*
-                yearBoxPressed(e);
-            }
-        });*/
 
         /* adding options for the year choice. */
         for (int i = 2022; i < 2040; i++) {
@@ -74,22 +58,6 @@ public class RemindersController {
         }
 
     }
-
-//    private void monthBoxPressed(ActionEvent event) {
-//        ComboBox comboBox = (ComboBox) event.getSource();
-//        int selectedOption = (int) comboBox.getSelectionModel().getSelectedItem();
-//    }
-//
-//    private void yearBoxPressed(ActionEvent event) {
-//        ComboBox comboBox = (ComboBox) event.getSource();
-//        int selectedOption = (int) comboBox.getSelectionModel().getSelectedItem();
-//
-//    }
-//
-//    private void dayBoxPressed(ActionEvent event) {
-//        ComboBox comboBox = (ComboBox) event.getSource();
-//        int selectedOption = (int) comboBox.getSelectionModel().getSelectedItem();
-//    }
 
     protected void writeDataToFile(String fileName){
         try {
@@ -113,6 +81,8 @@ public class RemindersController {
         } catch (IOException ignored) {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+        } catch (NullPointerException e) {
+            System.exit(-1);
         }
     }
     @FXML

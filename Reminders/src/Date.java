@@ -7,9 +7,6 @@ public class Date implements Serializable {
     private int year;
 
     public Date(int day, int month, int year) {
-//        if (0 < day && day < 32) {
-//            this.day = day;
-//        }
         this.day = day;
         this.month = month;
         this.year = year;
@@ -27,7 +24,6 @@ public class Date implements Serializable {
     @Override
     public int hashCode()
     {
-//        return this.toString().hashCode();
         return Objects.hash(this.day, this.month, this.year);
     }
 
