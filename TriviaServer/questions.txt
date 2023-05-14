@@ -1,0 +1,10 @@
+how old am i?
+2
+3
+4
+5
+how fast am i?
+fast
+very fast
+slow
+normal
