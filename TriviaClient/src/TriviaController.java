@@ -1,8 +1,6 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -11,8 +9,6 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class TriviaController {
@@ -24,12 +20,13 @@ public class TriviaController {
 
     private Socket s;
     private OutputStream outputStream;
-    private ObjectOutputStream objOutputStream;
     private PrintWriter printWriter;
     private ObjectInputStream objInputStream;
     private Question question;
+    private int counterQuestions;
+    private final int questionsNumber = 2;
     private Timer timer;
-    private boolean isQuestionTimeouted;
+    private boolean isQuestionTimeout;
     private int score;
 
 
@@ -43,30 +40,9 @@ public class TriviaController {
 
     private final int questionTimeout = 5000;
     public void initialize() {
-        try {
-            s = new Socket("127.0.0.1", 3333);
-            s.setSoTimeout(1000);
-//            s.connect();
-//            outputStream = s.getOutputStream();
-//            this.objOutputStream = new ObjectOutputStream(outputStream);
-            this.objInputStream = new ObjectInputStream(s.getInputStream());
-            this.printWriter = new PrintWriter(s.getOutputStream(), true);
-            this.outputStream = s.getOutputStream();
-            this.score = 0;
-            this.timer = new Timer(this.questionTimeout, new ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-                    System.out.println("timeout question");
-                    isQuestionTimeouted = true;
-                }
 
-            });
-        } catch (IOException e) {
-            /* TODO add a msgbox */
-            System.out.println("error in the socket init");
-            throw new RuntimeException(e);
-        }
-    this.getAndShowMessage();
+//        this.getAndShowMessage();
+        this.startNewGame();
     }
 
 //    protected void writeDataToFile(String fileName){
@@ -96,8 +72,55 @@ public class TriviaController {
 //        }
 //    }
 
+    protected void startNewGame() {
+        this.counterQuestions = 0;
+        this.score = 0;
+        try {
+            if (null != s) {
+                s.close();
+            }
+            s = new Socket("127.0.0.1", 3333);
+            s.setSoTimeout(1000);
+            this.objInputStream = new ObjectInputStream(s.getInputStream());
+            this.printWriter = new PrintWriter(s.getOutputStream(), true);
+            this.outputStream = s.getOutputStream();
+            this.timer = new Timer(this.questionTimeout, new ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
+                    System.out.println("timeout question");
+                    isQuestionTimeout = true;
+                }
+
+            });
+        } catch (IOException e) {
+            /* TODO add a msgbox */
+            System.out.println("error in the socket init");
+            throw new RuntimeException(e);
+        }
+
+        getAndShowMessage();
+    }
+
     protected void getAndShowMessage() {
         this.scoreLabel.setText(Integer.toString(this.score));
+
+        if (this.questionsNumber <= this.counterQuestions) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            Platform.runLater(() -> {
+
+                int input = JOptionPane.showConfirmDialog(null, "should start a new game?");
+                if (0 == input) {
+                    startNewGame();
+                }
+            });
+            return;
+        }
+
         try {
 //            this.objOutputStream.write("ready\n".getBytes());
 //            this.outputStream.write("ready\n".getBytes());
@@ -119,7 +142,7 @@ public class TriviaController {
             this.answerBox.getItems().add(answer);
         }
         this.textF.setText(this.question.getContent());
-        this.isQuestionTimeouted = false;
+        this.isQuestionTimeout = false;
         this.timer.start();
     }
 
@@ -129,28 +152,20 @@ public class TriviaController {
         try {
             String answer = this.answerBox.getSelectionModel().getSelectedItem();
             timer.stop();
-            if (Objects.equals(answer, this.question.getAnswers()[this.question.getCorrectAnswer()])) {
+            if (Objects.equals(answer, this.question.getAnswers()[this.question.getCorrectAnswer()])
+                    && !this.isQuestionTimeout) {
 //                JOptionPane.showMessageDialog(null, "correct");
-                if (!this.isQuestionTimeouted) {
-                    score += 5;
-                }
+                score += 10;
+            } else {
+                score -= 5;
             }
         } catch (NullPointerException exception) {
             return;
         }
+        this.counterQuestions++;
 
         getAndShowMessage();
 
-//        Date date = new Date(day, month, year);
-//        reminder = this.reminders.get(date);
-
-
-//        if (null == reminder) {
-//            JOptionPane.showMessageDialog(null, "No reminder found");
-//            return;
-//        }
-
-//        this.textF.setText(reminder);
-
     }
+
 }
