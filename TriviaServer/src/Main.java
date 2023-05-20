@@ -7,6 +7,7 @@ public class Main {
         System.out.println("Hello world!");
         Server server = new Server(3333);
         server.serverRun();
+
     }
 
 

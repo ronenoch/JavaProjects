@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Server {
@@ -65,7 +66,8 @@ public class Server {
                 System.out.println("cant accept.");
                 throw new RuntimeException(e);
             }
-            ClientHandler handler = new ClientHandler(newClient, this.questions);
+            System.out.println("accepted a client");
+            ClientHandler handler = new ClientHandler(newClient, new ArrayList<Question>(this.questions));
             handler.start();
         }
     }
