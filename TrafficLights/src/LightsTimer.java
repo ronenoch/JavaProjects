@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 
-public class MyTimer extends Thread{
+public class LightsTimer extends Thread{
 
     private ArrayList<TrafficLight> trafficLights;
+    private int timeout;
 
-    public MyTimer(ArrayList<TrafficLight> trafficLights) {
+    public LightsTimer(ArrayList<TrafficLight> trafficLights, int timeout) {
         this.trafficLights = trafficLights;
+        this.timeout = timeout;
     }
 
     @Override
@@ -14,7 +16,7 @@ public class MyTimer extends Thread{
         while (true)
         {
             try {
-                Thread.sleep(1500);
+                Thread.sleep(this.timeout);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
