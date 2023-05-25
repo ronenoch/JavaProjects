@@ -16,6 +16,7 @@ public class TriviaApplication extends Application {
     }
 
     public static void main(String[] args) {
+        System.setProperty("javafx.application.args", String.join(",", args));
         launch();
     }
 }

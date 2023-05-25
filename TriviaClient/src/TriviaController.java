@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Objects;
 
+
 public class TriviaController {
     @FXML
     private TextField textF;
@@ -28,7 +29,7 @@ public class TriviaController {
     private Timer timer;
     private boolean isQuestionTimeout;
     private int score;
-
+    private String serverAddress;
 
     @FXML
     private ChoiceBox<String> answerBox;
@@ -36,41 +37,17 @@ public class TriviaController {
     @FXML
     private Label scoreLabel;
 
-//    private HashMap<Date, String> reminders;
-
     private final int questionTimeout = 5000;
     public void initialize() {
 
 //        this.getAndShowMessage();
+        String[] args = System.getProperty("javafx.application.args").split(",");
+        if (1 != args.length) {
+            JOptionPane.showMessageDialog(null, "Usage: <program> <server ip / host name>");
+        }
+        this.serverAddress = args[0];
         this.startNewGame();
     }
-
-//    protected void writeDataToFile(String fileName){
-//        try {
-//            FileOutputStream myWriter = new FileOutputStream(fileName);
-//            ObjectOutputStream out = new ObjectOutputStream(myWriter);
-////            out.writeObject(this.reminders);
-//            myWriter.close();
-//            out.close();
-//        } catch (IOException e) {
-//            JOptionPane.showMessageDialog(null, "File IO error", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
-//
-//    protected void loadDataFromFile(String fileName) {
-//        try {
-//            FileInputStream myReader = new FileInputStream(fileName);
-//            ObjectInputStream input = new ObjectInputStream(myReader);
-////            this.reminders = (HashMap<Date, String>) input.readObject();
-//            myReader.close();
-//            input.close();
-//        } catch (IOException ignored) {
-////        } catch (ClassNotFoundException e) {
-////            throw new RuntimeException(e);
-//        } catch (NullPointerException e) {
-//            System.exit(-1);
-//        }
-//    }
 
     protected void startNewGame() {
         this.counterQuestions = 0;
@@ -79,7 +56,7 @@ public class TriviaController {
             if (null != s) {
                 s.close();
             }
-            s = new Socket("127.0.0.1", 3333);
+            s = new Socket(this.serverAddress, 3333);
             s.setSoTimeout(1000);
             this.objInputStream = new ObjectInputStream(s.getInputStream());
             this.printWriter = new PrintWriter(s.getOutputStream(), true);
@@ -122,14 +99,10 @@ public class TriviaController {
         }
 
         try {
-//            this.objOutputStream.write("ready\n".getBytes());
-//            this.outputStream.write("ready\n".getBytes());
-//            this.printWriter.write("ready\n");
             this.printWriter.println("ready\n");
             this.question = (Question) this.objInputStream.readObject();
         } catch (IOException e) {
             System.exit(-1);
-//            throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -154,7 +127,6 @@ public class TriviaController {
             timer.stop();
             if (Objects.equals(answer, this.question.getAnswers()[this.question.getCorrectAnswer()])
                     && !this.isQuestionTimeout) {
-//                JOptionPane.showMessageDialog(null, "correct");
                 score += 10;
             } else {
                 score -= 5;

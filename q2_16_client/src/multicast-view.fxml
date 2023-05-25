@@ -10,7 +10,7 @@
 <VBox alignment="CENTER" spacing="20.0"
       style="-fx-background-color: silver;"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="TriviaController"
+      fx:controller="MulticastController"
       fx:id="v_box">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
@@ -18,12 +18,14 @@
 
     <TextField fx:id="textF" maxWidth="300.0">
     </TextField>
-    <ChoiceBox fx:id="answerBox"/>
+<!--    <ChoiceBox fx:id="answerBox"/>-->
     <!--<Button text="save reminder" onAction="#saveReminder">-->
         <!--        <VBox.margin>-->
         <!--            <Insets top="70.0" left="10"/>-->
         <!--        </VBox.margin>-->
     <!--</Button>-->
-    <Button text="confirm" onAction="#confirmAnswer"/>
-    <Label fx:id="scoreLabel"/>
+<!--    <Label fx:id="messageLabel"/>-->
+    <Button text="clear" onAction="#clearMessage"/>
+    <Button text="connect" onAction="#connectPressed"/>
+    <Button text="leave" onAction="#leavePressed"/>
 </VBox>

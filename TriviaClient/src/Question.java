@@ -9,7 +9,6 @@ public class Question implements Serializable {
 
     public Question(String content) {
         this.content = content;
-//        this.answers = new ArrayList<>(4);
         this.answers = new String[4];
         this.insertedAnswersNumber = 0;
     }
