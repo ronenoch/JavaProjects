@@ -14,14 +14,6 @@ public class MulticastController {
 
     private Client client;
 
-    @FXML
-    private ChoiceBox<String> answerBox;
-
-    @FXML
-    private Label scoreLabel;
-
-    private final int questionTimeout = 5000;
-
     public void initialize() {
 
 //        this.getAndShowMessage();
@@ -30,8 +22,6 @@ public class MulticastController {
             JOptionPane.showMessageDialog(null, "Usage: <program> <server ip / host name>");
         }
         this.client = new Client(args[0], 6666, this.textF);
-//        this.startNewGame();
-//        this.client.joinSession();
     }
 
     @FXML

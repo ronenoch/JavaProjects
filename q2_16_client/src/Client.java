@@ -3,10 +3,10 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Date;
 
 public class Client extends Thread {
     private MulticastSocket socket;
-//    private int port;
     private String ip;
     private boolean isConnected;
     private TextField textField;
@@ -14,16 +14,13 @@ public class Client extends Thread {
     public Client(String ip, int port, TextField textField) {
         try {
             this.ip = ip;
-//            this.port = port;
             this.socket = new MulticastSocket(port);
             this.socket.setSoTimeout(100);
             this.textField = textField;
             this.isConnected = false;
-//            joinSession();
             this.start();
         } catch (IOException e) {
             System.out.println("io exception in client constructor");
-//            System.out.println(e);
         }
     }
 
@@ -34,8 +31,7 @@ public class Client extends Thread {
         DatagramPacket packet;
 
         while (true) {
-            /* TODO add a mutex or something */
-            if (!this.isConnected) {
+            if (!this.getIsConnected()) {
                 try {
                     Thread.sleep(100);
                     continue;
@@ -51,42 +47,41 @@ public class Client extends Thread {
             } catch (IOException e) {
 
                 System.out.println("io exception in client run loop");
-                System.out.println(e);
                 throw new RuntimeException(e);
             }
+            Date date = new Date();
             buf = packet.getData();
             int len = packet.getLength();
             String received = (new String(buf)).substring(0, len);
             Platform.runLater(() -> {
-                this.textField.setText(received);
+                this.textField.setText("[ " + date + "] " + received);
             });
-            System.out.println(received);
         }
 
     }
 
-    public void joinSession() {
+    public synchronized void joinSession() {
         try {
             InetAddress group = InetAddress.getByName(this.ip);
-//            this.socket = new MulticastSocket(port);
             this.socket.joinGroup(group);
             this.isConnected = true;
-//            start();
         } catch (IOException e) {
             System.out.println(e);
             System.out.println("io exception in client connect");
-//            System.out.println(e);
         }
     }
 
-    public void leaveSession() {
+    public synchronized void leaveSession() {
         try {
             this.socket.leaveGroup(InetAddress.getByName(this.ip));
-//            this.socket.close();
             this.isConnected = false;
 
         } catch (IOException e) {
             System.out.println(e);
         }
+    }
+
+    public synchronized boolean getIsConnected() {
+        return this.isConnected;
     }
 }

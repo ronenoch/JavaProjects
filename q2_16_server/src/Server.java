@@ -7,15 +7,12 @@ import java.util.Scanner;
 
 public class Server {
     private DatagramSocket s;
-    private int port;
-//    private ArrayList<Question> questions;
+    private final int port;
 
     public Server(int port) {
         try {
             s = new DatagramSocket();
             this.port = port;
-//            this.questions = new ArrayList<>();
-//            this.loadDataFromFile("questions.txt");
         } catch (IOException e) {
             /* TODO write a message and exit. */
             System.out.println("server ctor failed.");
