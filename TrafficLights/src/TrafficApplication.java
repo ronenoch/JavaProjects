@@ -27,8 +27,8 @@ public class TrafficApplication extends Application {
     }
 
     public static void main(String[] args) {
-        if (1 != args.length) {
-            System.out.println("USAGE: <program> <traffic light timeout>");
+        if (2 != args.length) {
+            System.out.println("USAGE: <program> <red traffic light timeout> <green traffic light timeout>");
             System.exit(-1);
         }
         System.setProperty("javafx.application.args", String.join(",", args));

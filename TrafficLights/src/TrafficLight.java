@@ -13,6 +13,7 @@ public class TrafficLight {
     private Rectangle redRectangle;
     private Rectangle greenRectangle;
     private BlinkTimer blinkTimer;
+    private int timeout;
 
     public TrafficLight(int x, int y) {
         int radius = 20;
@@ -27,6 +28,7 @@ public class TrafficLight {
         greenRectangle.setStroke(Color.BLACK);
         greenCircle.setStroke(Color.BLACK);
         redCircle.setStroke(Color.BLACK);
+        this.timeout = 0;
 
         this.blinkTimer = new BlinkTimer(this);
 //        this.blinkTimer.start();
@@ -94,5 +96,11 @@ public class TrafficLight {
         return greenRectangle;
     }
 
+    public int getTimeout() {
+        return this.timeout;
+    }
 
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
 }
