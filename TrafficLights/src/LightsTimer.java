@@ -23,7 +23,9 @@ public class LightsTimer extends Thread{
         {
             /* The idea is to sleep an interval time, and then reduce the interval time from all
             * the traffic light's time-to-timeout. After that, it checks if the time-to-timeout is 0 or below,
-            * and if so, it switches the state. Every traffic light has its own timing. */
+            * and if so, it switches the state. Every traffic light has its own timing.
+            * This is how I understood the assignment, and some comments in the forum confirmed it to me.
+            */
             try {
                 Thread.sleep(this.timeInterval);
             } catch (InterruptedException e) {
