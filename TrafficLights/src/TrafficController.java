@@ -21,23 +21,24 @@ public class TrafficController {
          * because if not, the traffic lights will be green at the same time as their neighbor. */
         if (redLightTimeout < greenLightTimeout) {
             JOptionPane.showMessageDialog(null, "the green light timeout must be smaller than the red's");
+            System.exit(-1);
         }
 
         TrafficLight a1 = new TrafficLight((int)(150), 40);
         a1.vehicleGoGreen();
-        a1.setTimeout(greenLightTimeout);
+        a1.setTimeUntilTimeout(greenLightTimeout);
 
         TrafficLight a2 = new TrafficLight((int)(40), 150);
         a2.vehicleGoRed();
-        a2.setTimeout(redLightTimeout);
+        a2.setTimeUntilTimeout(redLightTimeout);
 
         TrafficLight a3 = new TrafficLight((int)(150), 300);
         a3.vehicleGoGreen();
-        a3.setTimeout(greenLightTimeout);
+        a3.setTimeUntilTimeout(greenLightTimeout);
 
         TrafficLight a4 = new TrafficLight((int)(300 - 40), 150);
         a4.vehicleGoRed();
-        a4.setTimeout(redLightTimeout);
+        a4.setTimeUntilTimeout(redLightTimeout);
 
         ArrayList<TrafficLight> lights = new ArrayList<>();
         lights.add(a1);

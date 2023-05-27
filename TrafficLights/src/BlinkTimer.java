@@ -1,9 +1,7 @@
-import java.util.concurrent.Callable;
 
 import static javafx.application.Platform.runLater;
 
 public class BlinkTimer extends Thread {
-//    private Callable func;
     private TrafficLight light;
     private boolean active;
 
@@ -15,7 +13,7 @@ public class BlinkTimer extends Thread {
     public void run() {
         super.run();
         this.active = true;
-        while (this.active) {
+        while (this.getIsActive()) {
             runLater(() -> {
                 this.light.blink();
             });
@@ -28,7 +26,12 @@ public class BlinkTimer extends Thread {
         }
     }
 
-    public void cancel() {
+    /* an internal function, to check the boolean safely inside the loop */
+    private synchronized boolean getIsActive() {
+        return this.active;
+    }
+
+    public synchronized void cancel() {
         this.active = false;
     }
 
