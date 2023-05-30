@@ -2,33 +2,33 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Matrix {
-    private int rowSize;
-    private int columnSize;
+    private int rowCount;
+    private int columnCount;
     private ArrayList<ArrayList<Integer>> data;
 
-    public Matrix(int rowSize, int columnSize) {
-        this.rowSize = rowSize;
-        this.columnSize = columnSize;
-        this.data = new ArrayList<>(rowSize);
+    public Matrix(int rowsCount, int columnCount) {
+        this.rowCount = rowsCount;
+        this.columnCount = columnCount;
+        this.data = new ArrayList<>(rowsCount);
         this.generateRandomMatrix();
     }
 
     private void generateRandomMatrix() {
-        for (int i = 0; i < this.rowSize; i++) {
-            ArrayList<Integer> row = new ArrayList<Integer>(this.columnSize);
-            for (int j = 0; j < this.columnSize; j++) {
+        for (int i = 0; i < this.rowCount; i++) {
+            ArrayList<Integer> row = new ArrayList<Integer>(this.columnCount);
+            for (int j = 0; j < this.columnCount; j++) {
                 row.add(new Random().nextInt(10));
             }
             this.data.add(row);
         }
     }
 
-    public int getRowSize() {
-        return this.rowSize;
+    public int getRowCount() {
+        return this.rowCount;
     }
 
-    public int getColumnSize() {
-        return this.columnSize;
+    public int getColumnCount() {
+        return this.columnCount;
     }
 
     public ArrayList<ArrayList<Integer>> getData() {
@@ -38,9 +38,9 @@ public class Matrix {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < this.rowSize; i++) {
+        for (int i = 0; i < this.rowCount; i++) {
             ArrayList<Integer> row = this.data.get(i);
-            for (int j = 0; j < this.columnSize; j++) {
+            for (int j = 0; j < this.columnCount; j++) {
                 sb.append(row.get(j)).append(",");
             }
             sb.append('\n');

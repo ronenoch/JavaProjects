@@ -15,7 +15,7 @@ public class MultiplyMatrix extends Thread{
 
     private void calculateValue() {
         int value = 0;
-        for (int i = 0; i < this.firstMatrix.getColumnSize(); i++) {
+        for (int i = 0; i < this.firstMatrix.getColumnCount(); i++) {
             value += this.firstMatrix.getData().get(this.row).get(i) *
                     this.secondMatrix.getData().get(i).get(this.column);
         }
@@ -23,7 +23,7 @@ public class MultiplyMatrix extends Thread{
     }
 
     public synchronized void waitForMyTurn(int numberToPrint) {
-        while (lastFinishedThread + 1 <= this.row * this.firstMatrix.getRowSize() + this.column) {
+        while (lastFinishedThread + 1 <= this.row * this.secondMatrix.getColumnCount() + this.column) {
             try {
                 wait();
             } catch (InterruptedException ignored) {
@@ -31,7 +31,7 @@ public class MultiplyMatrix extends Thread{
         }
 
         System.out.print(numberToPrint);
-        if (this.column == this.secondMatrix.getColumnSize() - 1) {
+        if (this.column == this.secondMatrix.getColumnCount() - 1) {
             System.out.println(", ");
 
         } else {

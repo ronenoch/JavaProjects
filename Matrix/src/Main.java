@@ -20,8 +20,8 @@ public class Main {
         System.out.println(b);
 
         System.out.println("A x B matrix:");
-        for (int i = 0; i < a.getRowSize(); i++) {
-            for (int j = 0; j < b.getColumnSize(); j++) {
+        for (int i = 0; i < a.getRowCount(); i++) {
+            for (int j = 0; j < b.getColumnCount(); j++) {
                 MultiplyMatrix m = new MultiplyMatrix(a, b, i, j);
                 m.run();
             }
