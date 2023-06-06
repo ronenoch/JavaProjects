@@ -1,272 +1,326 @@
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class BigInt implements Comparable<BigInt>{
-    private ArrayList<Integer> number_list;
-    private boolean is_positive;
-    public BigInt(String number) {
-        boolean reached_non_zero_char = false;
+public class BigInt implements Comparable<BigInt> {
+    private ArrayList<Integer> numberList;
+    private boolean isPositive;
 
-        this.number_list = new ArrayList<Integer>();
+    public BigInt(String number) {
+        boolean reachedNonZeroChar = false;
+
+        this.numberList = new ArrayList<Integer>();
         if ('-' == number.charAt(0)) {
-            is_positive = false;
+            isPositive = false;
             number = number.substring(1);
-        }
-        else if ('+' == number.charAt(0)) {
-            is_positive = true;
+        } else if ('+' == number.charAt(0)) {
+            isPositive = true;
             number = number.substring(1);
-        }
-        else {
-            is_positive = true;
+        } else {
+            isPositive = true;
         }
 
         for (String digit : number.split("(?!^)")) {
-            if ("0".equals(digit) && !reached_non_zero_char) {
+            if ("0".equals(digit) && !reachedNonZeroChar) {
                 continue;
             }
-            reached_non_zero_char = true;
+            reachedNonZeroChar = true;
             try {
-                this.number_list.add(Integer.parseInt(digit));
+                this.numberList.add(Integer.parseInt(digit));
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new IllegalArgumentException();
             }
         }
-        if (0 == this.number_list.size()) {
-            is_positive = true;
-            this.number_list.add(0);
+        if (0 == this.numberList.size()) {
+            isPositive = true;
+            this.numberList.add(0);
         }
     }
-    public BigInt() {
-        this.number_list = new ArrayList<Integer>();
-        this.is_positive = true;
+
+    /**
+     * Removes the left zeros of the number.
+     */
+    private void trimLeftZeros() {
+        /* I need this variable because the list's size can be reduced during the loop */
+        int sizeTmp = this.numberList.size() - 1;
+        for (int i = 0; i < sizeTmp; i++) {
+            if (0 != this.numberList.get(0)) {
+                break;
+            }
+            this.numberList.remove(0);
+        }
     }
 
-    private BigInt inner_abs_add(BigInt other) {
-        int my_digit = 0;
-        int other_digit = 0;
-        int current_value = 0;
+    public BigInt() {
+        this.numberList = new ArrayList<Integer>();
+        this.isPositive = true;
+    }
+
+    /**
+     * inner function that adds the absolute other number to the absolute self-number
+     *
+     * @param other - the number to add
+     * @return the result
+     */
+    private BigInt innerAbsAdd(BigInt other) {
+        int myDigit = 0;
+        int otherDigit = 0;
+        int currentValue = 0;
         int carry = 0;
-        int max_index = Math.max(other.number_list.size(), this.number_list.size());
+        int maxIndex = Math.max(other.numberList.size(), this.numberList.size());
         BigInt result = new BigInt();
 
 
-        for (int i = 0; i < max_index ; i++) {
-//            if (max_index - this.number_list.size() > i) {
-            if (i >= this.number_list.size()) {
-                my_digit = 0;
+        for (int i = 0; i < maxIndex; i++) {
+            /* getting the digits from the right to left. If we pass the number's size, we put 0 in the current_digit*/
+            if (i >= this.numberList.size()) {
+                myDigit = 0;
+            } else {
+                myDigit = this.numberList.get(this.numberList.size() - 1 - i);
             }
-            else {
-                my_digit = this.number_list.get(this.number_list.size() - 1 - i);
+            if (i >= other.numberList.size()) {
+                otherDigit = 0;
+            } else {
+                otherDigit = other.numberList.get(other.numberList.size() - 1 - i);
             }
-//            if (max_index - other.number_list.size() > i) {
-            if (i >= other.number_list.size()) {
-                other_digit = 0;
-            }
-            else {
-                other_digit = other.number_list.get(other.number_list.size() - 1 - i);
-            }
-            current_value = my_digit + other_digit + carry;
-            if (current_value > 9) {
-                current_value = current_value - 10;
+            currentValue = myDigit + otherDigit + carry;
+            if (currentValue > 9) {
+                currentValue = currentValue - 10;
                 carry = 1;
 
-            }
-            else {
+            } else {
                 carry = 0;
             }
 
-            result.number_list.add(0, current_value);
+            result.numberList.add(0, currentValue);
         }
         if (carry > 0) {
-            result.number_list.add(0, 1);
+            result.numberList.add(0, 1);
         }
-        result.is_positive = true;
+        result.isPositive = true;
         return result;
     }
 
+    /**
+     * Plus operation. add other number to this number
+     *
+     * @param other the other bigint to add.
+     * @return the result
+     */
     public BigInt plus(BigInt other) {
         BigInt result;
         BigInt tmp_int;
 
-        if (this.is_positive && !other.is_positive) {
+        if (this.isPositive && !other.isPositive) {
             tmp_int = new BigInt(other.toString().replace("-", "+"));
             return this.minus(tmp_int);
-        } else if (!this.is_positive && other.is_positive) {
+        } else if (!this.isPositive && other.isPositive) {
             tmp_int = new BigInt(this.toString().replace("-", "+"));
             return other.minus(tmp_int);
-        } else if (!this.is_positive /* && !other.is_positive */) {
-            result = inner_abs_add(other);
-            result.is_positive = false;
+        } else if (!this.isPositive /* && !other.isPositive */) {
+            result = innerAbsAdd(other);
+            result.isPositive = false;
             return result;
-        }
-        else {
-            return inner_abs_add(other);
+        } else {
+            return innerAbsAdd(other);
         }
     }
 
-    private BigInt inner_minus(BigInt other)
-    {
-        int my_digit = 0;
-        int other_digit = 0;
-        int current_value = 0;
+    /**
+     * Inner function to calculate absolute number MINUS absolute number
+     *
+     * @param other the other BigInt
+     * @return the result
+     */
+    private BigInt minusWithAbsoluteValues(BigInt other) {
+        int myDigit = 0;
+        int otherDigit = 0;
+        int currentValue = 0;
         int carry = 0;
-        int max_index = Math.max(other.number_list.size(), this.number_list.size());
-        int size_tmp = 0;
+        int maxIndex = Math.max(other.numberList.size(), this.numberList.size());
         BigInt result = new BigInt();
 
-        for (int i = 0; i < max_index ; i++) {
-//            if (max_index - this.number_list.size() > i) {
-            if (i >= this.number_list.size()) {
-                my_digit = 0;
+        for (int i = 0; i < maxIndex; i++) {
+            /* getting the digits from the right to left. If we pass the number's size, we put 0 in the current_digit*/
+            if (i >= this.numberList.size()) {
+                myDigit = 0;
+            } else {
+                myDigit = this.numberList.get(this.numberList.size() - 1 - i);
             }
-            else {
-                my_digit = this.number_list.get(this.number_list.size() - 1 - i);
+            if (i >= other.numberList.size()) {
+                otherDigit = 0;
+            } else {
+                otherDigit = other.numberList.get(other.numberList.size() - 1 - i);
             }
-//            if (max_index - other.number_list.size() > i) {
-            if (i >= other.number_list.size()) {
-                other_digit = 0;
-            }
-            else {
-                other_digit = other.number_list.get(other.number_list.size() - 1 - i);
-            }
-            current_value = my_digit - other_digit - carry;
-            if (current_value < 0) {
-                current_value = current_value + 10;
+            currentValue = myDigit - otherDigit - carry;
+            if (currentValue < 0) {
+                currentValue = currentValue + 10;
                 carry = 1;
 
-            }
-            else {
+            } else {
                 carry = 0;
             }
 
-            result.number_list.add(0, current_value);
+            result.numberList.add(0, currentValue);
         }
-        result.is_positive = (carry == 0);
+        result.isPositive = (carry == 0);
 
         /* trim left zeros */
-        /* need this variable because the list's size can be reduced during the loop */
-        size_tmp = result.number_list.size() - 1;
-        for (int i = 0; i < size_tmp; i++) {
-            if (0 != result.number_list.get(0)) {
-                break;
-            }
-            result.number_list.remove(0);
-        }
+        result.trimLeftZeros();
 
         return result;
     }
 
+    /**
+     * Minus operation. Decrease other number from this number
+     *
+     * @param other the other bigint to reduce.
+     * @return the result
+     */
     public BigInt minus(BigInt other) {
         BigInt result;
 
-        if (this.is_positive && !other.is_positive) {
-            return this.inner_abs_add(other);
-        }
-        else if (!this.is_positive && other.is_positive) {
-            result = other.inner_abs_add(this);
-            result.is_positive = false;
+        if (this.isPositive && !other.isPositive) {
+            return this.innerAbsAdd(other);
+        } else if (!this.isPositive && other.isPositive) {
+            result = other.innerAbsAdd(this);
+            result.isPositive = false;
             return result;
-        } else if (!this.is_positive /* && !other.is_positive */ ) {
-            result = (this.compareTo(other) >= 0) ? other.inner_minus(this) : this.inner_minus(other);
-            result.is_positive = (this.compareTo(other) >= 0);
+        } else if (!this.isPositive /* && !other.is_positive */) {
+            /* negative minus negative is like negative plus positive that is like: (|other| minus |this|)
+             * so if my number is bigger than the other, then the abs value of the other number is bigger than my number,
+             * so I need to do (other absolute-minus this) and the result will be positive.
+             * else, my absolute value is bigger than the other's so the result will be negative and I need to calculate
+             * this by -(|this| - |other|)  */
+            result = (this.compareTo(other) >= 0) ? other.minusWithAbsoluteValues(this) : this.minusWithAbsoluteValues(other);
+            result.isPositive = (this.compareTo(other) >= 0);
             return result;
         } else {
             /* both positive */
-            result = (this.compareTo(other) < 0) ? other.inner_minus(this) : this.inner_minus(other);
-            result.is_positive = (this.compareTo(other) >= 0);
+            /* reducing the smaller number from the bigger number and updating the sign */
+            result = (this.compareTo(other) < 0) ? other.minusWithAbsoluteValues(this) : this.minusWithAbsoluteValues(other);
+            result.isPositive = (this.compareTo(other) >= 0);
             return result;
         }
 
     }
 
-    private int compare_abs_value(BigInt other) {
-        int my_digit;
-        int other_digit;
+    /**
+     * Compares absolute the absolute value of two bigints.
+     *
+     * @param other The bigint to compare with
+     * @return negative number if the other is greater, 0 if equal, positive number if the current number is bigger.
+     */
+    private int compareAbsValue(BigInt other) {
+        int myDigit;
+        int otherDigit;
 
-        if (this.number_list.size() > other.number_list.size()) {
+        if (this.numberList.size() > other.numberList.size()) {
             return 1;
-        }
-        else if (this.number_list.size() < other.number_list.size()) {
+        } else if (this.numberList.size() < other.numberList.size()) {
             return -1;
         }
 
-        for (int i = 0; i < this.number_list.size() ; i++) {
+        for (int i = 0; i < this.numberList.size(); i++) {
 
-            my_digit = this.number_list.get(i);
+            myDigit = this.numberList.get(i);
 
-            other_digit = other.number_list.get(i);
-            if (my_digit == other_digit) {
+            otherDigit = other.numberList.get(i);
+            if (myDigit == otherDigit) {
                 continue;
             }
-            return (my_digit > other_digit) ? 1 : -1;
+            return (myDigit > otherDigit) ? 1 : -1;
 
         }
         return 0;
     }
 
+    /**
+     * Multiply one bigInt with another
+     *
+     * @param other the other bigint to multiply.
+     * @return the result
+     */
     public BigInt multiply(BigInt other) {
-        int current_value = 0;
+        int currentValue = 0;
         BigInt result = new BigInt("0");
-        BigInt tmp_result;
+        BigInt tmpResult;
 
-        /* TODO check zero ? */
+        /* checking for zero to be more efficient */
+        if (0 == other.compareAbsValue(result)) {
+            return result;
+        }
 
-        for (int i = 0; i < this.number_list.size(); i++) {
-            current_value = this.number_list.get(this.number_list.size() - 1 - i);
-            tmp_result = new BigInt("0");
-            while (0 != current_value) {
-                tmp_result = tmp_result.plus(other);
-                current_value--;
+        for (int i = 0; i < this.numberList.size(); i++) {
+            currentValue = this.numberList.get(this.numberList.size() - 1 - i);
+            tmpResult = new BigInt("0");
+            /* for each digit of the first number, I add the other bigInt to a temp big int,
+             and then add zeros to multiply by (10 ^ position) */
+            while (0 != currentValue) {
+                tmpResult = tmpResult.plus(other);
+                currentValue--;
             }
+            /* adding the correct amount of zeros to the right of the number.*/
             for (int j = i; j > 0; j--) {
-                tmp_result.number_list.add(0);
+                tmpResult.numberList.add(0);
             }
-            result = result.plus(tmp_result);
+            /* adding the temp result to the current result */
+            result = result.plus(tmpResult);
         }
-        if (!this.is_positive) {
-            result.is_positive = !result.is_positive;
+
+        result.trimLeftZeros();
+
+        /* the other number's sign is already in the result. */
+        if (!this.isPositive) {
+            result.isPositive = !result.isPositive;
         }
-        /* TODO trim zeros */
+        if (0 == result.compareAbsValue(new BigInt("0"))) {
+            result.isPositive = true;
+        }
 
         return result;
     }
 
-    public BigInt divide(BigInt other)  {
-        BigInt result = new BigInt();
-        BigInt tmp_int = new BigInt(this.toString());
-        BigInt other_abs = new BigInt(other.toString().replace("-", "+"));
-        BigInt big_int_1 = new BigInt("+1");
+    /**
+     * divide one bigInt with another
+     *
+     * @param other the other bigint to divide.
+     * @return the result
+     */
+    public BigInt divide(BigInt other) {
+        BigInt result = new BigInt("0");
+        BigInt tmpInt = new BigInt(this.toString());
+        BigInt otherAbsValue = new BigInt(other.toString().replace("-", "+"));
+        BigInt bigInt1 = new BigInt("+1");
 
-        if (other.equals(new BigInt())) {
+        if (other.equals(new BigInt("0"))) {
+            System.out.println("You can not divide by zero!");
             throw new ArithmeticException();
         }
 
-        while (tmp_int.compareTo(other_abs) > 0) {
-            result = result.plus(big_int_1);
-            tmp_int = tmp_int.minus(other_abs);
+        while (tmpInt.compareTo(otherAbsValue) >= 0) {
+            result = result.plus(bigInt1);
+            tmpInt = tmpInt.minus(otherAbsValue);
         }
 
-        result.is_positive = (other.is_positive == this.is_positive);
+        result.isPositive = (other.isPositive == this.isPositive);
 
         return result;
     }
 
     @Override
     public int compareTo(BigInt other) {
-        int absolute_compare_value;
+        int absoluteCompareValue;
 
-        if (this.is_positive && !other.is_positive) {
+        if (this.isPositive && !other.isPositive) {
             return 1;
-        }
-        else if (!this.is_positive && other.is_positive) {
+        } else if (!this.isPositive && other.isPositive) {
             return -1;
         }
-        absolute_compare_value = this.compare_abs_value(other);
+        absoluteCompareValue = this.compareAbsValue(other);
 
         /* if the numbers are negative, then the result should be flipped */
-        return (this.is_positive) ? absolute_compare_value : -1 * absolute_compare_value;
+        return (this.isPositive) ? absoluteCompareValue : -1 * absoluteCompareValue;
 
     }
 
@@ -276,23 +330,26 @@ public class BigInt implements Comparable<BigInt>{
 
         if (o == null || getClass() != o.getClass()) return false;
         BigInt bigInt = (BigInt) o;
-        return is_positive == bigInt.is_positive && number_list.equals(bigInt.number_list);
+        return isPositive == bigInt.isPositive && numberList.equals(bigInt.numberList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number_list, is_positive);
+        return Objects.hash(numberList, isPositive);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        char sign = this.is_positive ? '+' : '-';
+//        char sign = this.isPositive ? '+' : '-';
+//        sb.append(sign);
 
-        sb.append(sign);
+        if (!this.isPositive) {
+            sb.append('-');
+        }
 
-        for (int i = 0; i < this.number_list.size(); i++) {
-            sb.append(String.valueOf(this.number_list.get(i)));
+        for (int i = 0; i < this.numberList.size(); i++) {
+            sb.append(String.valueOf(this.numberList.get(i)));
         }
         return sb.toString();
     }

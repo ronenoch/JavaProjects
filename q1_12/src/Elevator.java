@@ -11,7 +11,7 @@ public class Elevator extends Alarm {
 
     @Override
     public void action() {
-        System.out.println("floor number='" + String.valueOf(this.floor) + '\'' +
+        System.out.println("Elevator: floor number='" + String.valueOf(this.floor) + '\'' +
                 ", address='" + this.address + '\'' +
                 ", start time=" + this.startTime);
     }

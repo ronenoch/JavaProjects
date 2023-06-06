@@ -2,27 +2,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
-        BigInt big_int_1 = new BigInt("+3647423");
-        BigInt big_int_2 = new BigInt("96946549");
-        BigInt big_int_3 = new BigInt("+3647423");
-        BigInt big_int_4 = new BigInt("-1234");
-        BigInt big_int_5 = new BigInt("+1234");
-//        BigInt big_int_6 = new BigInt("-1234567");
-        BigInt big_int_empty = new BigInt("0");
-
-//        System.out.println(big_int_empty.plus(big_int_4));
-//        System.out.println(big_int_4.multiply(big_int_empty));
-//        System.out.println(big_int_2.divide(big_int_4));
-//        System.out.println(big_int_1.plus(big_int_2));
-//        System.out.println(big_int_1.minus(big_int_2));
-//        System.out.println(big_int_2.minus(big_int_1));
-//        System.out.println(big_int_4.minus(big_int_1));
-//        System.out.println(big_int_4.minus(big_int_4));
-//        System.out.println(big_int_4.minus(big_int_5));
-//        System.out.println(big_int_1.multiply(big_int_4));
-//        System.out.println(big_int_2.equals(big_int_1));
-//        System.out.println(big_int_3.equals(big_int_1));
         Scanner sc = new Scanner(System.in);
 
         while (true) {
@@ -42,14 +21,11 @@ public class Main {
                 System.out.println("divide() operation: ");
                 System.out.println(first_number.divide(second_number));
             }
-            /* TODO check exception type */
             catch (Exception e) {
-                continue;
+                System.out.println("Please try again. \n");
             }
 
         }
 
-//        System.out.println(big_int_3 == (big_int_1));
-//        System.out.println(big_int_3 > (big_int_1));
     }
 }

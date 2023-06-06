@@ -1,6 +1,6 @@
 import java.util.Date;
 public class Smoke extends Alarm {
-    private String operatorName;
+    protected String operatorName;
     public Smoke(String address, String operatorName) throws BadAlarm {
         super(new Date(), address);
         if (null == address) {
