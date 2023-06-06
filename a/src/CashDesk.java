@@ -1,45 +1,5 @@
 import java.util.ArrayList;
 
-class Item {
-    private final String name;
-    private final double price;
-
-    public Item(String name, double price) {
-        this.name = name;
-        this.price = price;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-}
-
-class ItemEntry {
-    private final Item item;
-    private final int quantity;
-
-    public ItemEntry(Item item, int quantity) {
-        this.item = item;
-        this.quantity = quantity;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public double getItemTotalPrice() {
-        return quantity * item.getPrice();
-    }
-}
-
 public class CashDesk {
     private double cashInRegister;
     private final ArrayList<ItemEntry> receiptItems;
@@ -68,10 +28,13 @@ public class CashDesk {
             builder.append(itemEntry.getQuantity()).append("\t\t");
             builder.append(itemEntry.getItemTotalPrice()).append("\n");
         }
-        builder.append("\nTotal Amount: " + getCurrentPurchaseAmount());
+        builder.append("\nTotal Amount: ").append(getCurrentPurchaseAmount());
         return builder.toString();
     }
 
+    /**
+     * Function that returns the total price of the current purchase
+     */
     public double getCurrentPurchaseAmount() {
         double totalPurchase = 0;
         for (ItemEntry itemEntry : receiptItems) {
@@ -80,10 +43,19 @@ public class CashDesk {
         return totalPurchase;
     }
 
+    /**
+     * Gets the total cash in the register
+     * @return the total cash.
+     */
     public double getTotalCash() {
         return this.cashInRegister;
     }
 
+    /**
+     * Receives a payment from the user.
+     * @param payment the payment of the user
+     * @return the change
+     */
     public double receiveBillPayment(double payment) {
         double change = payment - getCurrentPurchaseAmount();
         if (change < 0) {
