@@ -12,24 +12,21 @@ import java.net.Socket;
 import java.util.Objects;
 
 
-public class TriviaController {
+public class TriviaController extends Thread {
     @FXML
     private TextField textF;
 
     @FXML
     private VBox v_box;
 
-    private Socket s;
-    private OutputStream outputStream;
-    private PrintWriter printWriter;
-    private ObjectInputStream objInputStream;
     private Question question;
     private int counterQuestions;
-    private final int questionsNumber = 2;
+    private final int questionsNumber = 20;
     private Timer timer;
     private boolean isQuestionTimeout;
     private int score;
     private String serverAddress;
+    private Client client;
 
     @FXML
     private ChoiceBox<String> answerBox;
@@ -49,63 +46,33 @@ public class TriviaController {
         this.startNewGame();
     }
 
+    @Override
+    public void run() {
+        super.run();
+        startNewGame();
+    }
+
     protected void startNewGame() {
         this.counterQuestions = 0;
         this.score = 0;
-        try {
-            if (null != s) {
-                s.close();
+        this.timer = new Timer(this.questionTimeout, new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
+                System.out.println("timeout question");
+                isQuestionTimeout = true;
             }
-            s = new Socket(this.serverAddress, 3333);
-            s.setSoTimeout(1000);
-            this.objInputStream = new ObjectInputStream(s.getInputStream());
-            this.printWriter = new PrintWriter(s.getOutputStream(), true);
-            this.outputStream = s.getOutputStream();
-            this.timer = new Timer(this.questionTimeout, new ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-                    System.out.println("timeout question");
-                    isQuestionTimeout = true;
-                }
 
-            });
-        } catch (IOException e) {
-            /* TODO add a msgbox */
-            System.out.println("error in the socket init");
-            throw new RuntimeException(e);
-        }
-
-        getAndShowMessage();
+        });
+        /* restarting the client (needed when starting a new game) */
+        this.client = new Client(this.serverAddress, this, true);
+        this.client.getNextQuestion();
     }
 
-    protected void getAndShowMessage() {
+//    protected void getAndShowMessage() {
+    protected void getAndShowMessage(Question question) {
         this.scoreLabel.setText(Integer.toString(this.score));
 
-        if (this.questionsNumber <= this.counterQuestions) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            Platform.runLater(() -> {
-
-                int input = JOptionPane.showConfirmDialog(null, "should start a new game?");
-                if (0 == input) {
-                    startNewGame();
-                }
-            });
-            return;
-        }
-
-        try {
-            this.printWriter.println("ready\n");
-            this.question = (Question) this.objInputStream.readObject();
-        } catch (IOException e) {
-            System.exit(-1);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        this.question = question;
 
         this.answerBox.getSelectionModel().clearSelection();
         this.answerBox.getItems().clear();
@@ -121,7 +88,9 @@ public class TriviaController {
 
     @FXML
     protected void confirmAnswer() {
-
+        if (null == question) {
+            return;
+        }
         try {
             String answer = this.answerBox.getSelectionModel().getSelectedItem();
             timer.stop();
@@ -135,8 +104,11 @@ public class TriviaController {
             return;
         }
         this.counterQuestions++;
+        this.question = null;
 
-        getAndShowMessage();
+//        getAndShowMessage();
+        this.client = new Client(this.serverAddress, this, false);
+        this.client.getNextQuestion();
 
     }
 

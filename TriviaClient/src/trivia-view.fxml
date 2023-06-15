@@ -16,7 +16,7 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <TextField fx:id="textF" maxWidth="300.0">
+    <TextField fx:id="textF" maxWidth="400.0">
     </TextField>
     <ChoiceBox fx:id="answerBox"/>
     <!--<Button text="save reminder" onAction="#saveReminder">-->
