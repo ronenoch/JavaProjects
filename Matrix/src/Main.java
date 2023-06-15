@@ -23,7 +23,7 @@ public class Main {
         for (int i = 0; i < a.getRowCount(); i++) {
             for (int j = 0; j < b.getColumnCount(); j++) {
                 MultiplyMatrix m = new MultiplyMatrix(a, b, i, j);
-                m.run();
+                m.start();
             }
         }
     }
