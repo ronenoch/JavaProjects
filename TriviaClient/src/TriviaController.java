@@ -1,14 +1,11 @@
-import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.net.Socket;
 import java.util.Objects;
 
 
@@ -29,7 +26,17 @@ public class TriviaController extends Thread {
     private Client client;
 
     @FXML
-    private ChoiceBox<String> answerBox;
+//    private ChoiceBox<String> answerBox;
+    private RadioButton firstAnswer;
+    @FXML
+    private RadioButton secondAnswer;
+    @FXML
+    private RadioButton thirdAnswer;
+    @FXML
+    private RadioButton forthAnswer;
+    @FXML
+    private ToggleGroup answerGroup;
+//    private ArrayList<RadioButton> answers;
 
     @FXML
     private Label scoreLabel;
@@ -37,12 +44,27 @@ public class TriviaController extends Thread {
     private final int questionTimeout = 5000;
     public void initialize() {
 
-//        this.getAndShowMessage();
         String[] args = System.getProperty("javafx.application.args").split(",");
         if (1 != args.length) {
             JOptionPane.showMessageDialog(null, "Usage: <program> <server ip / host name>");
         }
         this.serverAddress = args[0];
+        answerGroup = new ToggleGroup();
+
+        firstAnswer.setToggleGroup(answerGroup);
+        secondAnswer.setToggleGroup(answerGroup);
+        thirdAnswer.setToggleGroup(answerGroup);
+        forthAnswer.setToggleGroup(answerGroup);
+        
+        answerGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                confirmAnswer();
+            }
+        });
+        for (Toggle button : answerGroup.getToggles()) {
+            ((RadioButton)button).setFocusTraversable(false);
+        }
         this.startNewGame();
     }
 
@@ -52,6 +74,9 @@ public class TriviaController extends Thread {
         startNewGame();
     }
 
+    /**
+     * starts a new trivia game.
+     */
     protected void startNewGame() {
         this.counterQuestions = 0;
         this.score = 0;
@@ -68,31 +93,36 @@ public class TriviaController extends Thread {
         this.client.getNextQuestion();
     }
 
-//    protected void getAndShowMessage() {
-    protected void getAndShowMessage(Question question) {
+    /**
+     * Receives a question from the server and show it on the screen.
+     * @param question the question from the server
+     */
+    protected void showMessage(Question question) {
         this.scoreLabel.setText(Integer.toString(this.score));
-
         this.question = question;
+        int i = 0;
 
-        this.answerBox.getSelectionModel().clearSelection();
-        this.answerBox.getItems().clear();
-        this.answerBox.valueProperty().set(null);
+        try {
+            ((RadioButton)this.answerGroup.getSelectedToggle()).setSelected(false);
+        } catch (NullPointerException ignored) {}
         for (String answer: this.question.getAnswers()) {
-
-            this.answerBox.getItems().add(answer);
+            ((RadioButton)this.answerGroup.getToggles().get(i)).setText(answer);
+            i++;
         }
         this.textF.setText(this.question.getContent());
         this.isQuestionTimeout = false;
         this.timer.start();
     }
 
-    @FXML
+    /**
+     * Called from the listener of the radio buttons. checks the user's answer.
+     */
     protected void confirmAnswer() {
         if (null == question) {
             return;
         }
         try {
-            String answer = this.answerBox.getSelectionModel().getSelectedItem();
+            String answer = (String) ((RadioButton)this.answerGroup.getSelectedToggle()).getText();
             timer.stop();
             if (Objects.equals(answer, this.question.getAnswers()[this.question.getCorrectAnswer()])
                     && !this.isQuestionTimeout) {
@@ -106,7 +136,6 @@ public class TriviaController extends Thread {
         this.counterQuestions++;
         this.question = null;
 
-//        getAndShowMessage();
         this.client = new Client(this.serverAddress, this, false);
         this.client.getNextQuestion();
 

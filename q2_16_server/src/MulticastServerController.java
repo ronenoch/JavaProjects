@@ -12,29 +12,30 @@ public class MulticastServerController {
 
     private Server server;
 
-//    private Client client;
-
+    /**
+     * the controller initializer.
+     */
     public void initialize() {
 
-//        this.getAndShowMessage();
         String[] args = System.getProperty("javafx.application.args").split(",");
         if (1 != args.length) {
             JOptionPane.showMessageDialog(null, "Usage: <program> <server ip / host name>");
         }
-//        this.client = new Client(args[0], 6666, this.textF);
         this.server = new Server(6666);
-//        server.serverRun();
         textF.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override
+            public void handle(ActionEvent e) {
                 handleInsert(e);
             }
         });
     }
 
-    /* This function checks the value of the text in a textfield. The function was made for future use */
-    private void inner_handle_insert(TextField textField) {
-//        String id_str = textField.getId();
-//        int id = Integer.valueOf(id_str);
+    /**
+     * Sends the message to the clients after it was received from the user.
+     *
+     * @param textField jfx text object that has the text to send.
+     */
+    private void innerHandleInsert(TextField textField) {
         String input_text = (textField.getText());
 
         if (input_text.isEmpty()) {
@@ -44,23 +45,13 @@ public class MulticastServerController {
 
     }
 
+    /**
+     * handler for events of the textfield of the server.
+     *
+     * @param e input event
+     */
     private void handleInsert(ActionEvent e) {
-        inner_handle_insert((TextField)e.getSource());
+        innerHandleInsert((TextField) e.getSource());
     }
-
-//    @FXML
-//    protected void clearMessage() {
-//        this.textF.clear();
-//    }
-//
-//    @FXML
-//    protected void leavePressed() {
-//        this.client.leaveSession();
-//    }
-//
-//    @FXML
-//    protected void connectPressed() {
-//        this.client.joinSession();
-//    }
 
 }

@@ -11,6 +11,12 @@ public class Client extends Thread {
     private boolean isConnected;
     private TextField textField;
 
+    /**
+     * multicast client. can register or leave the session.
+     * @param ip server's ip
+     * @param port server's port
+     * @param textField the textfield of the client. the incoming messages will be written in it.
+     */
     public Client(String ip, int port, TextField textField) {
         try {
             this.ip = ip;
@@ -31,6 +37,7 @@ public class Client extends Thread {
         DatagramPacket packet;
 
         while (true) {
+            /* wait until we join the session. */
             if (!this.getIsConnected()) {
                 try {
                     Thread.sleep(100);
@@ -47,8 +54,9 @@ public class Client extends Thread {
             } catch (IOException e) {
 
                 System.out.println("io exception in client run loop");
-                throw new RuntimeException(e);
+                System.exit(-1);
             }
+            /* update the ui field with the text and the date. */
             Date date = new Date();
             buf = packet.getData();
             int len = packet.getLength();
@@ -60,6 +68,9 @@ public class Client extends Thread {
 
     }
 
+    /**
+     * Joining the multicast session.
+     */
     public synchronized void joinSession() {
         try {
             InetAddress group = InetAddress.getByName(this.ip);
@@ -71,6 +82,9 @@ public class Client extends Thread {
         }
     }
 
+    /**
+     * Leaves the multicast session
+     */
     public synchronized void leaveSession() {
         try {
             this.socket.leaveGroup(InetAddress.getByName(this.ip));
@@ -81,6 +95,10 @@ public class Client extends Thread {
         }
     }
 
+    /**
+     * getter for isConnected variable.
+     * @return is the client connected.
+     */
     public synchronized boolean getIsConnected() {
         return this.isConnected;
     }

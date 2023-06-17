@@ -16,7 +16,6 @@ public class MulticastController {
 
     public void initialize() {
 
-//        this.getAndShowMessage();
         String[] args = System.getProperty("javafx.application.args").split(",");
         if (1 != args.length) {
             JOptionPane.showMessageDialog(null, "Usage: <program> <server ip / host name>");

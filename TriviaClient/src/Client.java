@@ -16,29 +16,57 @@ public class Client extends Thread {
     private TriviaController controller;
 
 
+    /**
+     * client thread that connects to the server once and then each question handling is in a different thread
+     * @param address address of the server
+     * @param controller the fx controller
+     * @param shouldReconnect should the client reconnect to the server (in a new game)
+     */
     public Client(String address, TriviaController controller, boolean shouldReconnect) {
         this.serverAddress = address;
         this.controller = controller;
-        this.restartClient(shouldReconnect);
+        if (shouldReconnect) {
+
+            this.restartClient();
+        }
 
     }
 
-    public void restartClient(boolean shouldReconnect) {
+    /**
+     * restart the client socket.
+     */
+    public void restartClient() {
         try {
-            if (null == s || shouldReconnect) {
-                s = new Socket(this.serverAddress, 3333);
-                s.setSoTimeout(1000);
-                objInputStream = new ObjectInputStream(s.getInputStream());
-                printWriter = new PrintWriter(s.getOutputStream(), true);
-                outputStream = s.getOutputStream();
-            }
+            closeSocket();
+            s = new Socket(this.serverAddress, 3333);
+            s.setSoTimeout(1000);
+            objInputStream = new ObjectInputStream(s.getInputStream());
+            printWriter = new PrintWriter(s.getOutputStream(), true);
+            outputStream = s.getOutputStream();
         } catch (IOException e) {
-            /* TODO add a msgbox */
+            /* TODO add a msgbox ? */
             System.out.println("error in the socket init");
-            throw new RuntimeException(e);
+            System.exit(-1);
         }
     }
 
+    /**
+     * close the socket and streams.
+     */
+    private void closeSocket() {
+        try {
+            if (s != null) {
+                s.close();
+            }
+            objInputStream.close();
+            printWriter.close();
+            outputStream.close();
+        } catch (Exception ignored) {}
+    }
+
+    /**
+     * starts the thread to get another question.
+     */
     public void getNextQuestion() {
         this.start();
     }
@@ -50,7 +78,7 @@ public class Client extends Thread {
             printWriter.println("ready\n");
             question = (Question) objInputStream.readObject();
         } catch (IOException e) {
-            System.out.println("io exception");
+            System.out.println(e.getStackTrace());
             try {
                 Thread.sleep(500);
             } catch (InterruptedException err) {
@@ -69,6 +97,7 @@ public class Client extends Thread {
                 }
             });
         } catch (ClassNotFoundException e) {
+            /* should never happen */
             throw new RuntimeException(e);
         }
 
@@ -76,9 +105,8 @@ public class Client extends Thread {
 
             Question finalQuestion = question;
             Platform.runLater(() -> {
-                        this.controller.getAndShowMessage(finalQuestion);
+                        this.controller.showMessage(finalQuestion);
             });
         }
-//        return question;
     }
 }
